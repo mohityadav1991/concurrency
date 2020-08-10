@@ -4,7 +4,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public final class EmployeeAnalytics {
-    public double averageAgeOfEnrolledEmployeesImperative(
+    public static double averageAgeOfEnrolledEmployeesImperative(
             final Employee[] employeeArray) {
         Long startTime = System.currentTimeMillis();
         List<Employee> activeEmployees = new ArrayList<Employee>();
@@ -26,16 +26,7 @@ public final class EmployeeAnalytics {
         return result;
     }
 
-    /**
-     * Computes the average age of all actively enrolled Employees using
-     * parallel streams. This should mirror the functionality of
-     * averageAgeOfEnrolledEmployeesImperative. This method should not use any
-     * loops.
-     *
-     * @param employeeArray Employee data for the class.
-     * @return Average age of enrolled Employees
-     */
-    public double averageAgeOfEnrolledEmployeesParallelStream(
+    public static double averageAgeOfEnrolledEmployeesParallelStream(
             final Employee[] employeeArray) {
         List<Employee> employees = Arrays.asList(employeeArray);
         long startTime = System.currentTimeMillis();
@@ -49,13 +40,6 @@ public final class EmployeeAnalytics {
         return result;
     }
 
-    /**
-     * Sequentially computes the most common first name out of all Employees that
-     * are no longer active in the class using loops.
-     *
-     * @param employeeArray Employee data for the class.
-     * @return Most common first name of inactive Employees
-     */
     public static String mostCommonFirstNameOfInactiveEmployeesImperative(
             final Employee[] employeeArray) {
         Long startTime = System.currentTimeMillis();
@@ -110,16 +94,7 @@ public final class EmployeeAnalytics {
         return result;
     }
 
-    /**
-     * Sequentially computes the number of Employees who have failed the course
-     * who are also older than 20 years old. A failing grade is anything below a
-     * 65. A Employee has only failed the course if they have a failing grade and
-     * they are not currently active.
-     *
-     * @param employeeArray Employee data for the class.
-     * @return Number of failed grades from Employees older than 20 years old.
-     */
-    public int countNumberOfFailedEmployeesOlderThan20Imperative(
+    public static int countNumberOfFailedEmployeesOlderThan20Imperative(
             final Employee[] employeeArray) {
         Long startTime = System.currentTimeMillis();
         int count = 0;
@@ -133,18 +108,7 @@ public final class EmployeeAnalytics {
         return count;
     }
 
-    /**
-     * Computes the number of Employees who have failed the course who are
-     * also older than 20 years old. A failing grade is anything below a 65. A
-     * Employee has only failed the course if they have a failing grade and they
-     * are not currently active. This should mirror the functionality of
-     * countNumberOfFailedEmployeesOlderThan20Imperative. This method should not
-     * use any loops.
-     *
-     * @param employeeArray Employee data for the class.
-     * @return Number of failed grades from Employees older than 20 years old.
-     */
-    public int countNumberOfFailedEmployeesOlderThan20ParallelStream(
+    public static int countNumberOfFailedEmployeesOlderThan20ParallelStream(
             final Employee[] employeeArray) {
         Long startTime = System.currentTimeMillis();
         List<Employee> employees = Arrays.asList(employeeArray);
@@ -183,7 +147,11 @@ public final class EmployeeAnalytics {
 
     public static void main(String[] args) {
         final Employee[] employees = generateEmployeeData();
-        while(true) {
+        for (int i =0; i < 5; i++) {
+            averageAgeOfEnrolledEmployeesImperative(employees);
+            averageAgeOfEnrolledEmployeesParallelStream(employees);
+            countNumberOfFailedEmployeesOlderThan20Imperative(employees);
+            countNumberOfFailedEmployeesOlderThan20ParallelStream(employees);
             mostCommonFirstNameOfInactiveEmployeesImperative(employees);
             mostCommonFirstNameOfInactiveEmployeesParallelStream(employees);
             System.out.println("------------------------------------------------");
