@@ -24,7 +24,6 @@ public class Account {
         return false;
     }
 
-
     public boolean deposit(final int amount) {
         if (amount > 0) {
             balance += amount;
@@ -39,9 +38,12 @@ public class Account {
     }
 
     public boolean performTransfer(final int amount, final Account target) {
+        // Step 1: Read - Write
         final boolean withdrawSuccess = withdraw(amount);
+        // Step 2 : Compute
         busyWork(this.id, target.id);
         if (withdrawSuccess) {
+            // Step 3 : Read - Write
             target.deposit(amount);
         }
         return withdrawSuccess;

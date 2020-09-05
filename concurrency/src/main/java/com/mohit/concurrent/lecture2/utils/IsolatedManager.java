@@ -22,21 +22,6 @@ public class IsolatedManager {
         return Math.abs(obj.hashCode()) % nLocks;
     }
 
-    private TreeSet<Object> createSortedObjects(final Object[] objects) {
-        TreeSet<Object> sorted = new TreeSet<Object>(new Comparator<Object>() {
-            @Override
-            public int compare(final Object o1, final Object o2) {
-                return lockIndexFor(o1) - lockIndexFor(o2);
-            }
-        });
-
-        for (Object obj : objects) {
-            sorted.add(obj);
-        }
-
-        return sorted;
-    }
-
     public void acquireAllLocks() {
         for (int i = 0; i < locks.length; i++) {
             locks[i].lock();
@@ -50,17 +35,14 @@ public class IsolatedManager {
     }
 
     public void acquireLocksFor(final Object[] objects) {
-        final TreeSet<Object> sorted = createSortedObjects(objects);
-
-        for (Object obj : sorted) {
+        for (Object obj : objects) {
             final int lockIndex = lockIndexFor(obj);
             locks[lockIndex].lock();
         }
     }
 
     public void releaseLocksFor(final Object[] objects) {
-        final TreeSet<Object> sorted = createSortedObjects(objects);
-        for (Object obj : sorted) {
+        for (Object obj : objects) {
             final int lockIndex = lockIndexFor(obj);
             locks[lockIndex].unlock();
         }
