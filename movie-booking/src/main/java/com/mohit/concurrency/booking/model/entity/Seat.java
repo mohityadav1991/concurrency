@@ -9,8 +9,15 @@ import lombok.NoArgsConstructor;
  **/
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
 public class Seat {
-    private int value;
+    private SeatStatus status;
     private Long userId;
+
+    public Seat(SeatStatus status) {
+        this.status = status;
+    }
+
+    public Seat() {
+        this.status = SeatStatus.AVAILABLE;
+    }
 }

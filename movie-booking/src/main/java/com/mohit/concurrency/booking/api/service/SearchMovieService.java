@@ -3,11 +3,12 @@ package com.mohit.concurrency.booking.api.service;
 import com.mohit.concurrency.booking.api.serialiser.MovieSearchFilter;
 import com.mohit.concurrency.booking.model.entity.Movie;
 import com.mohit.concurrency.booking.model.entity.Screen;
+import com.mohit.concurrency.booking.model.entity.Seat;
+import com.mohit.concurrency.booking.model.entity.SeatStatus;
 import com.mohit.concurrency.booking.model.exception.ErrorCodes;
 import com.mohit.concurrency.booking.model.exception.InvalidSearchRequestException;
 import com.mohit.concurrency.booking.model.exception.NotFoundException;
 import com.mohit.concurrency.booking.repository.dao.MovieDao;
-import com.mohit.concurrency.booking.repository.dao.ScreenDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -23,9 +24,6 @@ public class SearchMovieService {
 
     @Autowired
     private MovieDao movieDao;
-
-    @Autowired
-    private ScreenDao screenDao;
 
     public Set<Movie> handleSearchRequest(MovieSearchFilter filter) throws InvalidSearchRequestException {
         validateInput(filter);
@@ -51,9 +49,18 @@ public class SearchMovieService {
 
     public boolean[][] handleFetchLayoutRequest(long eventId) throws NotFoundException {
         Movie movie = movieDao.findOne(eventId);
-        if(movie == null)
+        if (movie == null)
             throw new NotFoundException(ErrorCodes.E101);
-        Screen screen = screenDao.findOne(movie.getScreenId());
-        return screen.getLayout();
+        Screen screen = movie.getScreen();
+        Seat[][] screenLayout = screen.getLayout();
+        int rowCount = screenLayout.length;
+        int colCount = screenLayout[0].length;
+        boolean[][] layout = new boolean[rowCount][colCount];
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < colCount; j++) {
+                layout[i][j] = screenLayout[i][j].getStatus().equals(SeatStatus.AVAILABLE);
+            }
+        }
+        return layout;
     }
 }

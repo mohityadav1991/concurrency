@@ -7,12 +7,11 @@ import lombok.Data;
  **/
 @Data
 public class Screen extends BaseEntity{
-    private boolean[][] layout;
-
+    private Seat[][] layout;
     public Screen() {
     }
 
-    public Screen(Long id, boolean[][] layout) {
+    public Screen(Long id, Seat[][] layout) {
         super(id);
         this.layout = layout;
     }

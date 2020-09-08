@@ -21,23 +21,16 @@ public class BookingDatabase implements BaseDatabase<Booking> {
 
     private List<Booking> bookings;
     private Map<Long, Booking> bookingIdIndex;
-    private Map<Long, Seat[][]> eventBookingMap;
 
     public BookingDatabase() {
         bookings = new ArrayList<>();
         bookingIdIndex = new HashMap<>();
-        eventBookingMap = new ConcurrentHashMap<>();
     }
 
     @Override
     public boolean save(Booking b) {
         bookings.add(b);
         bookingIdIndex.put(b.getId(), b);
-        return true;
-    }
-
-    public boolean saveLayout(Long movieId, Seat[][] layout) {
-        eventBookingMap.put(movieId, layout);
         return true;
     }
 
@@ -50,7 +43,4 @@ public class BookingDatabase implements BaseDatabase<Booking> {
         return bookingIdIndex.get(id);
     }
 
-    public Seat[][] fetchLayout(Long movieId) {
-        return eventBookingMap.get(movieId);
-    }
 }

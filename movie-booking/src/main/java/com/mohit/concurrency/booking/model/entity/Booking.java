@@ -13,5 +13,5 @@ import java.util.List;
 public class Booking extends BaseEntity{
     private Long userId;
     private Long movieId;
-    private List<Long> seatNumbers;
+    private List<GridLocation> seatNumbers;
 }

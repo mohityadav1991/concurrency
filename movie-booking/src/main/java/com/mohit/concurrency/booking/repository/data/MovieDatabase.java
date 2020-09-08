@@ -28,9 +28,9 @@ public class MovieDatabase implements BaseDatabase<Movie>{
     public boolean save(Movie m) {
         movies.add(m);
         movieIdIndex.put(m.getId(), m);
-        String title = m.getTitle().toLowerCase();
 
         // Create title index
+        String title = m.getTitle().toLowerCase();
         Set<Movie> moviesTitle;
         if (titleIndex.containsKey(title)) {
             moviesTitle = titleIndex.get(title);
@@ -41,24 +41,26 @@ public class MovieDatabase implements BaseDatabase<Movie>{
         titleIndex.put(title, moviesTitle);
 
         // Create genre index
+        String genre = m.getGenre().toLowerCase();
         Set<Movie> moviesGenre;
-        if (genreIndex.containsKey(title)) {
-            moviesGenre = genreIndex.get(title);
+        if (genreIndex.containsKey(genre)) {
+            moviesGenre = genreIndex.get(genre);
         } else {
             moviesGenre = new HashSet<>();
         }
         moviesGenre.add(m);
-        genreIndex.put(title, moviesGenre);
+        genreIndex.put(genre, moviesGenre);
 
         // Create language index
+        String lang = m.getLanguage().toLowerCase();
         Set<Movie> moviesLang;
-        if (languageIndex.containsKey(title)) {
-            moviesLang = languageIndex.get(title);
+        if (languageIndex.containsKey(lang)) {
+            moviesLang = languageIndex.get(lang);
         } else {
             moviesLang = new HashSet<>();
         }
-        moviesGenre.add(m);
-        languageIndex.put(title, moviesLang);
+        moviesLang.add(m);
+        languageIndex.put(lang, moviesLang);
         return true;
     }
 

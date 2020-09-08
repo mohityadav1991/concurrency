@@ -4,6 +4,7 @@ import com.mohit.concurrency.booking.api.serialiser.MovieSearchFilter;
 import com.mohit.concurrency.booking.api.service.BookingService;
 import com.mohit.concurrency.booking.api.service.SearchMovieService;
 import com.mohit.concurrency.booking.model.entity.Booking;
+import com.mohit.concurrency.booking.model.entity.GridLocation;
 import com.mohit.concurrency.booking.model.entity.Movie;
 import com.mohit.concurrency.booking.model.exception.InvalidSearchRequestException;
 import com.mohit.concurrency.booking.model.exception.InvalidStateException;
@@ -34,11 +35,11 @@ public class ExternalApi {
         return searchMovieService.handleFetchLayoutRequest(eventId);
     }
 
-    public boolean lockSeats(Set<Long> seatIds, Long eventId, Long userId) {
+    public boolean lockSeats(Set<GridLocation> seatIds, Long eventId, Long userId) {
         return bookingService.lockSeats(seatIds, eventId, userId);
     }
 
-    public Long bookSeats(Set<Long> seatIds, Long eventId, Long userId) throws NotFoundException, InvalidStateException {
+    public Long bookSeats(Set<GridLocation> seatIds, Long eventId, Long userId) throws NotFoundException, InvalidStateException {
         return bookingService.bookSeats(seatIds, eventId, userId);
     }
 
