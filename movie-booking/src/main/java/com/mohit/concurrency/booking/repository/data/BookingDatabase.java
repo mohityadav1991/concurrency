@@ -1,17 +1,12 @@
 package com.mohit.concurrency.booking.repository.data;
 
 import com.mohit.concurrency.booking.model.entity.Booking;
-import com.mohit.concurrency.booking.model.entity.Seat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author mohit@interviewbit.com on 04/09/20
@@ -28,14 +23,21 @@ public class BookingDatabase implements BaseDatabase<Booking> {
     }
 
     @Override
-    public boolean save(Booking b) {
+    public long save(Booking b) {
+        long id = generateId();
+        b.setId(id);
         bookings.add(b);
         bookingIdIndex.put(b.getId(), b);
-        return true;
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 
-    public long getSize() {
-        return bookings.size();
+    private long generateId() {
+        return bookings.size() + 1;
     }
 
     @Override

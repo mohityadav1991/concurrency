@@ -20,24 +20,14 @@ import java.util.Set;
  * @author mohit@interviewbit.com on 04/09/20
  **/
 @Component
-public class SearchMovieService {
+public class MovieService {
 
     @Autowired
     private MovieDao movieDao;
 
     public Set<Movie> handleSearchRequest(MovieSearchFilter filter) throws InvalidSearchRequestException {
         validateInput(filter);
-        Set<Movie> movies = new HashSet<>();
-        if (!StringUtils.isEmpty(filter.getTitle())) {
-            movies = movieDao.filterByTitle(filter.getTitle(), movies);
-        }
-        if (!StringUtils.isEmpty(filter.getGenre())) {
-            movies = movieDao.filterByGenre(filter.getGenre(), movies);
-        }
-        if (!StringUtils.isEmpty(filter.getLanguage())) {
-            movies = movieDao.filterByLanguage(filter.getLanguage(), movies);
-        }
-        return movies;
+        return movieDao.findMovies(filter);
     }
 
     private void validateInput(MovieSearchFilter filter) throws InvalidSearchRequestException {

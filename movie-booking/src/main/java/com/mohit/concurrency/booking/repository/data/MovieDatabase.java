@@ -1,6 +1,7 @@
 package com.mohit.concurrency.booking.repository.data;
 
 import com.mohit.concurrency.booking.model.entity.Movie;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public class MovieDatabase implements BaseDatabase<Movie>{
     }
 
     @Override
-    public boolean save(Movie m) {
+    public long save(Movie m) {
         movies.add(m);
         movieIdIndex.put(m.getId(), m);
 
@@ -61,12 +62,16 @@ public class MovieDatabase implements BaseDatabase<Movie>{
         }
         moviesLang.add(m);
         languageIndex.put(lang, moviesLang);
-        return true;
+        return m.getId();
     }
 
     @Override
     public Movie findById(Long id) {
         return movieIdIndex.get(id);
+    }
+
+    public Set<Movie> findAll() {
+        return new HashSet<>(movies);
     }
 
     public Map<String, Set<Movie>> getTitleIndex() {

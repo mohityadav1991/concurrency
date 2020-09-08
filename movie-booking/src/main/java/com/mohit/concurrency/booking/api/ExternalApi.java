@@ -2,7 +2,7 @@ package com.mohit.concurrency.booking.api;
 
 import com.mohit.concurrency.booking.api.serialiser.MovieSearchFilter;
 import com.mohit.concurrency.booking.api.service.BookingService;
-import com.mohit.concurrency.booking.api.service.SearchMovieService;
+import com.mohit.concurrency.booking.api.service.MovieService;
 import com.mohit.concurrency.booking.model.entity.Booking;
 import com.mohit.concurrency.booking.model.entity.GridLocation;
 import com.mohit.concurrency.booking.model.entity.Movie;
@@ -22,19 +22,20 @@ import java.util.Set;
 public class ExternalApi {
 
     @Autowired
-    private SearchMovieService searchMovieService;
+    private MovieService movieService;
 
     @Autowired
     private BookingService bookingService;
 
     public Set<Movie> fetchEvents(MovieSearchFilter filter) throws InvalidSearchRequestException {
-        return searchMovieService.handleSearchRequest(filter);
+        return movieService.handleSearchRequest(filter);
     }
 
     public boolean[][] fetchEventSeatLayout(long eventId) throws NotFoundException {
-        return searchMovieService.handleFetchLayoutRequest(eventId);
+        return movieService.handleFetchLayoutRequest(eventId);
     }
 
+    // unlock after given time
     public boolean lockSeats(Set<GridLocation> seatIds, Long eventId, Long userId) {
         return bookingService.lockSeats(seatIds, eventId, userId);
     }

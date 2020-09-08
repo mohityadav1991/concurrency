@@ -1,7 +1,6 @@
 package com.mohit.concurrency.booking.api.service;
 
 import com.mohit.concurrency.booking.model.entity.*;
-import com.mohit.concurrency.booking.model.exception.ErrorCodes;
 import com.mohit.concurrency.booking.model.exception.InvalidStateException;
 import com.mohit.concurrency.booking.model.exception.NotFoundException;
 import com.mohit.concurrency.booking.repository.data.BookingDatabase;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -45,6 +43,7 @@ public class BookingService {
         Movie movie = movieDatabase.findById(movieId);
         Screen screen = movie.getScreen();
         Seat[][] layout = screen.getLayout();
+
         if (!areSeatsLockedByUser(seatIds, layout, userId))
             return -1l;
 
@@ -56,16 +55,13 @@ public class BookingService {
         movie.setScreen(screen);
         movieDatabase.save(movie);
 
-        // Create and pessist a new booking
+        // Create and persist a new booking
         Booking newBooking = Booking.builder()
                 .userId(userId)
                 .seatNumbers(new ArrayList<>(seatIds))
                 .movieId(movieId)
                 .build();
-        long id = bookingDatabase.getSize() + 1;
-        newBooking.setId(id);
-        bookingDatabase.save(newBooking);
-        return id;
+        return bookingDatabase.save(newBooking);
     }
 
     private boolean areSeatsAvailable(Set<GridLocation> seatIds, Seat[][] layout) {
